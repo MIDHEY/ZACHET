@@ -1,0 +1,38 @@
+#include <iostream>
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    float x, y, r;
+    char z;
+    while(true) {
+        std::cout << "Введите выражение: ";
+        std::cin >> x >> z >> y;
+        switch (z)
+        {
+        case '+':
+            r = x + y;
+            std::cout << "Ответ: " << r << "\n";
+            break;
+        case '-':
+            r = x - y;
+            std::cout << "Ответ: " << r << "\n";
+            break;
+        case '*':
+            r = x * y;
+            std::cout << "Ответ: " << r << "\n";
+            break;
+        case '/':
+            if (y == 0) {
+                std::cout << "На ноль делить нельзя\n" ;
+                return 0;
+            }
+            r = x / y;
+            std::cout << "Ответ: " << r << "\n";
+            break;
+        default:
+            break;
+        }
+    }
+    return 0;
+}
