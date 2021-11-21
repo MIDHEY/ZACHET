@@ -1,0 +1,215 @@
+#include <iostream>
+#include <fstream>
+#include<windows.h>
+#include <string>
+
+using namespace std;
+
+int menu() {
+    string x;
+    cout << "\n0. Выход из программы\n";
+    cout << "1. Преобразование строки в верхний регистр\n";
+    cout << "2. Преобразование строки в нижний регистр\n";
+    cout << "3. Конкатенация строк\n";
+    cout << "4. Вывод строки в файл\n\n";
+    cin >> x;
+	cout << "\n";
+	char* eopt;
+	int opt = strtol(x.c_str(), &eopt, 10);
+	if (*eopt) {
+		return 'e';
+	}
+	bool flag = (opt == 0 || opt == 1 || opt == 2 || opt == 3 || opt == 4) ? 1 : 0;
+	if (flag)
+	{
+		return opt;
+	}
+	else
+	{
+		return 'e';
+	}
+}
+
+string ReadFromFile() {
+	ifstream fin;
+	string path;
+	cout << "Введите название файла\n> ";
+	getline(cin, path);
+	cout << "\n";
+	fin.open(path + ".txt");
+	string str = "";
+	if (!fin.is_open())
+	{
+		cout << "Ошибка открытия файла" << "\n\n";
+	}
+	else
+	{
+		cout << "Файл открыт!" << "\n\n";
+		while (!fin.eof())
+		{
+			getline(fin, str);
+			cout << str << "\n";
+		}
+	}
+	return str;
+}
+
+void InputString(string& sa, string& sb) {
+	string c;
+	bool ci = 0;
+	cout << "Ввод первой строки.\n\n1. Ввести первую строку с клавиатуры\n2. Прочесть первую строку с файла\n\n";
+	while (ci != true) {
+		cin >> c;
+		int cp = strtol(c.c_str(), NULL, 10);
+		ci = (cp == 1 || cp == 2) ? 1 : 0;
+		if (!ci) cout << "\nВыберите верный пункт меню\n";
+	}
+	ci = 0;
+	int cp = strtol(c.c_str(), NULL, 10);
+	cout << "\n";
+	switch (cp) {
+	case 1:
+		cin.ignore();
+		cout << "Введите строку а: ";
+		getline(cin, sa);
+		break;
+	case 2:
+		cin.ignore();
+		sa = ReadFromFile();
+		break;
+	default:
+		break;
+	}
+	cout << "\nВвод второй строки.\n\n1. Ввести первую строку с клавиатуры\n2. Прочесть первую строку с файла\n\n";
+	while (ci != true) {
+		cin >> c;
+		int cp = strtol(c.c_str(), NULL, 10);
+		ci = (cp == 1 || cp == 2) ? 1 : 0;
+		if (!ci) cout << "\nВыберите верный пункт меню\n";
+	}
+	switch (cp) {
+	case 1:
+		cin.ignore();
+		cout << "Введите строку b: ";
+		getline(cin, sb);
+		break;
+	case 2:
+		cin.ignore();
+		sb = ReadFromFile();
+		break;
+	default:
+		cout << "Ошибка\n";
+		break;
+	}
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+    int mopt;
+    string a, b, m;
+	string name = "";
+	InputString(a,b);
+
+	fstream file;
+	ifstream fin;
+   
+    do {
+		mopt = menu();
+		if (mopt == 'e')
+		{
+			while (mopt == 'e')
+			{
+				cout << "Ошибка, выберите верный пункт меню" << endl ;
+				mopt = menu();
+			}
+		}
+		switch (mopt) {
+		case 1:
+			int answer;
+			cout << "\nПреобразовать строку\n1. a\n2. b" << "\n\n" << "> ";
+			cin >> answer;
+			cout << endl;
+			if (answer == 1)
+			{
+				for (int i = 0; i < a.length(); i++)
+				{
+					a[i] = toupper(a[i]);
+				}
+				cout << "\nСтрока а преобразована в верхний регистр: " << a << "\n\n";	
+			}
+			else if (answer == 2)
+			{
+				for (int i = 0; i < b.length(); i++)
+				{
+					b[i] = toupper(b[i]);
+				}
+				cout << "\nСтрока b преобразована в верхний регистр: " << b << "\n\n";
+			}
+			else
+				cout << "\nОшибка" << endl << endl;
+			break;
+		case 2:
+			int answer2;
+			cout << endl;
+			cout << "Преобразовать строку\n1. a\n2. b" << "\n\n" << "> ";
+			cin >> answer2;
+			cout << endl;
+			if (answer2 == 1)
+			{
+				for (int i = 0; i < a.length(); i++)
+				{
+					a[i] = tolower(a[i]);
+				}
+				cout << "Строка а преобразована в нижний регистр: " << a << "\n\n";	
+			}
+			else if (answer2 == 2)
+			{
+				for (int i = 0; i < b.length(); i++)
+				{																
+					b[i] = tolower(b[i]);
+				}
+				cout << "Строка b преобразована в нижний регистр: " << b << endl;
+			}
+			else
+				cout << "Ошибка" << endl;
+			break;
+		case 3:
+			cout << "Конкатенация строк выполнена: " << a + b << "\n\n";
+			break;
+		case 4:
+			int answer3;
+			cout << "Создайте файл" << "\n\n";
+			cin >> name;
+			file.open(name + ".txt", fstream::in | fstream::out | fstream::app);
+			cout << "\n" << "Файл успешно создан" << "\n\n";
+			cout << "Какую строку записать в файл?\n1. a\n2. b\n3. Обе\n4. Ввести своё сообщение\n> ";
+			cin >> answer3;
+
+			if (answer3 == 1)
+				file << a;
+			else if (answer3 == 2)
+				file << b;
+			else if (answer3 == 3)
+				file << a << ' ' << b;
+			else if (answer3 == 4)
+			{
+				cout << "Введите текст: ";
+				cin.ignore();
+				getline(cin, m);
+				file << m;
+				cout << "\n";
+				cout << "Текст успешно записан!" << "\n\n";
+			}
+			else
+				cout << "Ошибка, вы выбрали не тот пункт меню\n";
+			break;
+		default:
+			return 0;
+		}
+    } while (mopt != 0);
+    return 0;
+}
+
